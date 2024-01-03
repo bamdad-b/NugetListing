@@ -5,8 +5,8 @@ namespace NugetListing
 {
     internal class Program
     {
-        static HashSet<string> packageNames = new();
-        static string packagesPath = @"C:\Users\Afagh B\.nuget\packages";
+        static readonly HashSet<string> packageNames = new();
+        static readonly string packagesPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\.nuget\packages";
         static void Main(string[] args)
         {
             string path = GetInput(".csproj file path (0 to start):");
@@ -29,7 +29,7 @@ namespace NugetListing
             Console.WriteLine("Press enter to deploy zip.");
             Console.ReadLine();
 
-            CreateZipFile(@"D:\temp\packs.zip", packageNames);
+            CreateZipFile(@"packages.zip", packageNames);
 
             Console.WriteLine();
             Console.WriteLine("Done.");
@@ -107,9 +107,8 @@ namespace NugetListing
         public static void CreateZipFile(string fileName, IEnumerable<string> files)
         {
             Console.WriteLine();
-            using (ZipFile zip = new ZipFile())
+            using (ZipFile zip = new())
             {
-                //zip.UseUnicodeAsNecessary = true;  // utf-8
                 foreach (var file in files)
                 {
                     try
